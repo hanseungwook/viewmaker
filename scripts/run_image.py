@@ -71,7 +71,7 @@ def run(args, gpu_device=None):
         num_nodes=config.num_nodes,
          # 'ddp' is usually faster, but we use 'dp' so the negative samples 
          # for the whole batch are used for the SimCLR loss
-        strategy=config.distributed_backend,
+        distributed_backend=config.distributed_backend,
         max_epochs=config.num_epochs,
         min_epochs=config.num_epochs,
         checkpoint_callback=ckpt_callback,
