@@ -4,6 +4,7 @@ from torchvision import transforms
 from PIL import ImageFilter, Image
 
 from src.datasets.cifar10 import CIFAR10, CIFAR10Corners
+from src.datasets.cifar100 import CIFAR100, CIFAR100Corners
 
 from src.datasets.meta_datasets.aircraft import Aircraft
 from src.datasets.meta_datasets.cu_birds import CUBirds
@@ -18,6 +19,8 @@ from src.datasets.data_statistics import get_data_mean_and_stdev
 
 DATASET = {
     'cifar10': CIFAR10,
+    'cifar100': CIFAR100,
+    'cifar100_corners': CIFAR100Corners,
     'cifar10_corners': CIFAR10Corners,
     'meta_aircraft': Aircraft,
     'meta_cu_birds': CUBirds,
