@@ -1,5 +1,6 @@
 DATA_ROOTS = {
-    'cifar10': 'data/cifar10',
+    'cifar10': '/gpfs/u/home/BNSS/BNSSsgwh/scratch/data/cifar10',
+    'cifar100': '/gpfs/u/home/BNSS/BNSSsgwh/scratch/data',
     'meta_aircraft': 'data/aircraft/fgvc-aircraft-2013b',
     'meta_cu_birds': 'data/cu_birds/CUB_200_2011',
     'meta_dtd': 'data/dtd/dtd',

@@ -67,10 +67,11 @@ def run(args, gpu_device=None):
     wandb.init(project='image', entity='viewmaker', name=config.exp_name, config=config, sync_tensorboard=True)
     trainer = pl.Trainer(
         default_root_dir=config.exp_dir,
-        gpus=gpu_device,
+        gpus=config.num_gpus,
+        num_nodes=config.num_nodes,
          # 'ddp' is usually faster, but we use 'dp' so the negative samples 
          # for the whole batch are used for the SimCLR loss
-        # distributed_backend=config.distributed_backend or 'dp',
+        strategy=config.distributed_backend,
         max_epochs=config.num_epochs,
         min_epochs=config.num_epochs,
         checkpoint_callback=ckpt_callback,
