@@ -17,6 +17,7 @@ PYTHON_VIRTUAL_ENVIRONMENT=pytorch1.7
 CONDA_ROOT=$HOME2/scratch/miniconda3
 
 ## Activate WMLCE virtual environment 
+source init_env.sh
 source ${CONDA_ROOT}/etc/profile.d/conda.sh
 conda activate $PYTHON_VIRTUAL_ENVIRONMENT
 ulimit -s unlimited
@@ -27,7 +28,7 @@ export PYTHONFAULTHANDLER=1
 
 srun python3 \
       scripts/run_image.py \
-      config/pretrain_viewmaker_cifar10_simclr.json \
+      config/image/pretrain_viewmaker_cifar10_simclr.json \
 
 echo "Run completed at:- "
 date
