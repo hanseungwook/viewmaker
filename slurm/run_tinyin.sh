@@ -1,9 +1,9 @@
 #!/bin/bash -l
 
 # SLURM SUBMIT SCRIPT
-#SBATCH -J vm_cifar100
-#SBATCH -o vm_cifar100_%j.out
-#SBATCH -e vm_cifar100_%j.err
+#SBATCH -J vm_tinyin
+#SBATCH -o vm_tinyin_%j.out
+#SBATCH -e vm_tinyin_%j.err
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:6
 #SBATCH --ntasks-per-node=6
@@ -28,7 +28,7 @@ export PYTHONFAULTHANDLER=1
 
 srun python3 \
       scripts/run_image.py \
-      config/image/pretrain_viewmaker_cifar100_simclr.json \
+      config/image/pretrain_viewmaker_tinyin_simclr.json \
 
 echo "Run completed at:- "
 date

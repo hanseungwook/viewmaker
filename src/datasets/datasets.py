@@ -62,6 +62,15 @@ def load_image_transforms(dataset):
     if 'cifar' in dataset:
         train_transforms = transforms.ToTensor()
         test_transforms = transforms.ToTensor()
+    elif 'tinyin' in dataset:
+        train_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
     elif dataset in ['mscoco'] or 'meta_' in dataset:
         train_transforms = transforms.Compose([
             transforms.Resize(32),
@@ -80,7 +89,7 @@ def load_image_transforms(dataset):
 
 
 def load_default_transforms(dataset):
-    if 'cifar' in dataset:
+    if 'cifar10' == dataset:
         train_transforms = transforms.Compose([
             transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
             transforms.RandomApply([
@@ -97,6 +106,40 @@ def load_default_transforms(dataset):
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.491, 0.482, 0.446],
                                 std=[0.247, 0.243, 0.261]),
+        ])
+    elif 'cifar100' == dataset:
+        train_transforms = transforms.Compose([
+            transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+            transforms.RandomApply([
+                transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+            ], p=0.8),
+            transforms.RandomGrayscale(p=0.2),
+            transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5071, 0.4867, 0.4408],
+                                 std=[0.2675, 0.2565, 0.2761])
+        ])
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5071, 0.4867, 0.4408],
+                                 std=[0.2675, 0.2565, 0.2761])
+        ])
+    elif 'tinyin' == dataset:
+        train_transforms = transforms.Compose([
+            transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+            transforms.RandomApply([
+                transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+            ], p=0.8),
+            transforms.RandomGrayscale(p=0.2),
+            transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
         ])
     elif dataset in ['mscoco'] or 'meta_' in dataset:
         mean, std = get_data_mean_and_stdev(dataset)
