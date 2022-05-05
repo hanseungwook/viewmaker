@@ -27,7 +27,7 @@ export NCCL_DEBUG=INFO
 export PYTHONFAULTHANDLER=1
 
 # wandb offline flag
-export WANDB_MODE=OFFLINE
+export WANDB_MODE=offline
 
 srun python3 \
       scripts/run_image.py \
