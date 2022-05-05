@@ -26,6 +26,9 @@ ulimit -s unlimited
 export NCCL_DEBUG=INFO
 export PYTHONFAULTHANDLER=1
 
+# wandb offline flag
+export WANDB_MODE=OFFLINE
+
 srun python3 \
       scripts/run_image.py \
       config/image/pretrain_viewmaker_cifar100_simclr.json \
