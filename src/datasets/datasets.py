@@ -5,6 +5,7 @@ from PIL import ImageFilter, Image
 
 from src.datasets.cifar10 import CIFAR10, CIFAR10Corners
 from src.datasets.cifar100 import CIFAR100, CIFAR100Corners
+from src.datasets.tinyimagenet import TinyImageNet, TinyImageNetCorners
 
 from src.datasets.meta_datasets.aircraft import Aircraft
 from src.datasets.meta_datasets.cu_birds import CUBirds
@@ -22,6 +23,8 @@ DATASET = {
     'cifar100': CIFAR100,
     'cifar100_corners': CIFAR100Corners,
     'cifar10_corners': CIFAR10Corners,
+    'tinyin': TinyImageNet,
+    'tinyin_corners': TinyImageNetCorners,
     'meta_aircraft': Aircraft,
     'meta_cu_birds': CUBirds,
     'meta_dtd': DTD,
