@@ -15,7 +15,7 @@
 	"resnet_small": true
     },
     "pretrain_model": {
-        "exp_dir": "./experiments/pretrain_viewmaker_cifar_simclr_resnet18/",
+        "exp_dir": "./experiments/experiments/pretrain_viewmaker_cifar_simclr_resnet18/",
         "checkpoint_name": "epoch=199.ckpt"
     },
     "optim_params": {
