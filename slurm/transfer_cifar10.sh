@@ -32,6 +32,7 @@ export WANDB_MODE=offline
 srun python3 \
       scripts/run_meta_transfer.py \
       config/image/transfer_viewmaker_cifar10_simclr.json \
+      --dataset cifar10
 
 echo "Run completed at:- "
 date
