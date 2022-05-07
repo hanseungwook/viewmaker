@@ -99,7 +99,8 @@ if __name__ == "__main__":
     parser.add_argument('--dataset', type=str, help='which meta dataset',
                          choices=['meta_aircraft', 'meta_cu_birds', 'meta_dtd',
                                   'meta_fashionmnist', 'meta_fungi', 'meta_mnist',
-                                  'meta_mscoco', 'meta_traffic_sign', 'meta_vgg_flower'])
+                                  'meta_mscoco', 'meta_traffic_sign', 'meta_vgg_flower',
+                                  'cifar10', 'cifar100', 'tinyin'])
     parser.add_argument('--gpu-device', type=str, default=None)
     parser.add_argument('--profiler', action='store_true')
     parser.add_argument('--ckpt', type=str, default=None)

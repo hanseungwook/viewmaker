@@ -32,6 +32,7 @@ export WANDB_MODE=offline
 srun python3 \
       scripts/run_image.py \
       config/image/pretrain_viewmaker_cifar10_simclr.json \
+      --dataset cifar10
 
 echo "Run completed at:- "
 date
