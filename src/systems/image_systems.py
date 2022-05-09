@@ -661,7 +661,8 @@ class TransferViewMakerSystem(pl.LightningModule):
             val_acc = num_correct / float(num_total)
             metrics['val_acc'] = val_acc
             progress_bar = {'acc': val_acc}
-            return {'val_loss': metrics['val_loss'], 
+            return {
+                #'val_loss': metrics['val_loss'], 
                     'log': metrics, 
                     'val_acc': val_acc,
                     'progress_bar': progress_bar}
