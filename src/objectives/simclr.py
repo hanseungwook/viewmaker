@@ -65,4 +65,4 @@ class SimCLRObjective(torch.nn.Module):
         loss = - (self.t / self.base_t) * mean_log_prob_pos
         loss = loss.view(anchor_count, batch_size).mean()
 
-        return 
+        return loss
