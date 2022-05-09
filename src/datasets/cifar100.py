@@ -12,7 +12,7 @@ from src.datasets.root_paths import DATA_ROOTS
 
 
 class CIFAR100(data.Dataset):
-    NUM_CLASSES = 10
+    NUM_CLASSES = 100
     NUM_CHANNELS = 3
     FILTER_SIZE = 32
     MULTI_LABEL = False
@@ -51,7 +51,7 @@ class CIFAR100(data.Dataset):
 class CIFAR100Corners(data.Dataset):
     '''Creates a four-corners mosaic of different CIFAR images.'''
     
-    NUM_CLASSES = 10
+    NUM_CLASSES = 100
     NUM_CHANNELS = 3
     FILTER_SIZE = 32
     MULTI_LABEL = False
