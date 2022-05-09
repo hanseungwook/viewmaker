@@ -656,7 +656,8 @@ class TransferViewMakerSystem(pl.LightningModule):
         else:
             num_correct = sum([out['val_num_correct'] for out in outputs])
             num_total = sum([out['val_num_total'] for out in outputs])
-            print(f'validation metrics {num_correct}, {num_total}')
+            num_correct = torch.sum(num_correct)
+            num_total = torch.sum(num_total)
             val_acc = num_correct / float(num_total)
             metrics['val_acc'] = val_acc
             progress_bar = {'acc': val_acc}
