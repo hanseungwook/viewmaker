@@ -37,7 +37,7 @@ class SimCLRObjective(torch.nn.Module):
         # compute logits
         anchor_dot_contrast = torch.div(
             torch.matmul(anchor_feature, contrast_feature.T),
-            self.temperature)
+            self.t)
         # for numerical stability
         logits_max, _ = torch.max(anchor_dot_contrast, dim=1, keepdim=True)
         logits = anchor_dot_contrast - logits_max.detach()
@@ -61,7 +61,7 @@ class SimCLRObjective(torch.nn.Module):
         mean_log_prob_pos = (mask * log_prob).sum(1) / mask.sum(1)
 
         # loss
-        loss = - (self.temperature / self.base_temperature) * mean_log_prob_pos
+        loss = - (self.t / self.base_t) * mean_log_prob_pos
         loss = loss.view(anchor_count, batch_size).mean()
 
         return 
