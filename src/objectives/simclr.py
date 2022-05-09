@@ -43,6 +43,7 @@ class SimCLRObjective(torch.nn.Module):
         logits = anchor_dot_contrast - logits_max.detach()
 
         # tile mask
+        mask = torch.eye(batch_size, dtype=torch.float32).to(contrast_feature.device)
         mask = mask.repeat(anchor_count, contrast_count)
         # mask-out self-contrast cases
         logits_mask = torch.scatter(
