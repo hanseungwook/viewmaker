@@ -80,7 +80,7 @@ class PretrainViewMakerSystem(pl.LightningModule):
         '''Create the encoder model.'''
         if self.config.model_params.resnet_small:
             # ResNet variant for smaller inputs (e.g. CIFAR-10).
-            encoder_model = resnet_small.ResNet18(self.config.model_params.out_dim)
+            encoder_model = resnet_small.ResNet18(self.config.model_params.out_dim, input_size=self.config.model_params.input_size)
         else:
             resnet_class = getattr(
                 torchvision.models, 
