@@ -14,7 +14,7 @@ from src.datasets.root_paths import DATA_ROOTS
 class TinyImageNet(data.Dataset):
     NUM_CLASSES = 200
     NUM_CHANNELS = 3
-    FILTER_SIZE = 64
+    FILTER_SIZE = 32
     MULTI_LABEL = False
 
     def __init__(
@@ -51,7 +51,7 @@ class TinyImageNetCorners(data.Dataset):
     
     NUM_CLASSES = 200
     NUM_CHANNELS = 3
-    FILTER_SIZE = 64
+    FILTER_SIZE = 32
     MULTI_LABEL = False
 
     def __init__(
