@@ -25,11 +25,11 @@
     "loss_params": {
         "objective": "AdversarialSimCLRLoss",
         "view_maker_loss_weight": 1,
-        "t": 0.07
+        "t": 0.1
     },
     "optim_params": {
-        "batch_size": 256,
-        "learning_rate": 0.03,
+        "batch_size": 1024,
+        "learning_rate": 0.5,
         "momentum": 0.9,
         "weight_decay": 1e-4,
         "validate_freq": 1,
@@ -37,7 +37,7 @@
         "num_view_update": 1,
         "viewmaker_optim": "adam"
     },
-    "num_epochs": 200,
+    "num_epochs": 800,
     "validate": true,
     "copy_checkpoint_freq": 5,
     "continue_from_checkpoint": null
