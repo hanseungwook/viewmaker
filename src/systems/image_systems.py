@@ -80,7 +80,7 @@ class PretrainViewMakerSystem(pl.LightningModule):
         '''Create the encoder model.'''
         if self.config.model_params.resnet_small:
             # ResNet variant for smaller inputs (e.g. CIFAR-10).
-            encoder_model = resnet_small.ResNet18(self.config.model_params.out_dim)
+            encoder_model = resnet_small.ResNet18(self.config.model_params.out_dim, input_size=self.config.model_params.input_size)
         else:
             resnet_class = getattr(
                 torchvision.models, 
@@ -475,12 +475,26 @@ class TransferViewMakerSystem(pl.LightningModule):
         
         if resnet == 'resnet18':
             if self.config.model_params.use_prepool:
-                if self.pretrain_config.model_params.resnet_small:
-                    num_features = 512 * 4 * 4
+                if self.pretrain_config.model_params.input_size == 64:
+                    if self.pretrain_config.model_params.resnet_small:
+                        num_features = 512 * 8 * 8
+                    else:
+                        num_features = 512 * 14 * 14
                 else:
-                    num_features = 512 * 7 * 7
+                    if self.pretrain_config.model_params.resnet_small:
+                        num_features = 512 * 4 * 4
+                    else:
+                        num_features = 512 * 7 * 7
             else:
                 num_features = 512
+        elif resnet == 'resnet50':
+            if self.config.model_params.use_prepool:
+                if self.pretrain_config.model_params.resnet_small:
+                    num_features = 2048 * 4 * 4
+                else:
+                    num_features = 2048 * 7 * 7
+            else:
+                num_features = 2048
         else:
             raise Exception(f'resnet {resnet} not supported.')
         self.train_dataset, self.val_dataset = datasets.get_image_datasets(
