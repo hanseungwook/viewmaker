@@ -130,7 +130,7 @@ def load_default_transforms(dataset):
         ])
     elif 'tinyin' == dataset:
         train_transforms = transforms.Compose([
-            transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+            transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
             transforms.RandomApply([
                 transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
             ], p=0.8),
