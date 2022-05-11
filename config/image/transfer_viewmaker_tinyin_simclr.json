@@ -14,7 +14,7 @@
     },
     "model_params": {
         "use_prepool": true,
-        "resnet_small": false
+        "resnet_small": true
     },
     "pretrain_model": {
         "exp_dir": "./experiments/experiments/pretrain_viewmaker_tinyin_simclr_resnet18/",
