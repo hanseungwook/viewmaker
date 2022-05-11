@@ -475,10 +475,16 @@ class TransferViewMakerSystem(pl.LightningModule):
         
         if resnet == 'resnet18':
             if self.config.model_params.use_prepool:
-                if self.pretrain_config.model_params.resnet_small:
-                    num_features = 512 * 4 * 4
+                if self.pretrain_config.model_params.input_size == 64:
+                    if self.pretrain_config.model_params.resnet_small:
+                        num_features = 512 * 8 * 8
+                    else:
+                        num_features = 512 * 14 * 14
                 else:
-                    num_features = 512 * 7 * 7
+                    if self.pretrain_config.model_params.resnet_small:
+                        num_features = 512 * 4 * 4
+                    else:
+                        num_features = 512 * 7 * 7
             else:
                 num_features = 512
         elif resnet == 'resnet50':
