@@ -26,8 +26,14 @@ class TinyImageNet(data.Dataset):
         super().__init__()
         if not os.path.isdir(root):
             os.makedirs(root)
+        
+        if train:
+            root = os.path.join(root, 'train')
+        else:
+            root = os.path.join(root, 'test')
+
         self.dataset = datasets.ImageFolder(
-            os.path.join(root, 'train'),
+            root,
             transform=image_transforms,
         )
 
