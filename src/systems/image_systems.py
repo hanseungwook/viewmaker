@@ -481,8 +481,6 @@ class TransferViewMakerSystem(pl.LightningModule):
                     num_features = 512 * 7 * 7
             else:
                 num_features = 512
-        elif resnet == 'resnet50':
-            num_features = 2048
         else:
             raise Exception(f'resnet {resnet} not supported.')
         self.train_dataset, self.val_dataset = datasets.get_image_datasets(
