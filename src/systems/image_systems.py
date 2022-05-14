@@ -160,6 +160,7 @@ class PretrainViewMakerSystem(pl.LightningModule):
                 'view1_embs': self.model(view1),
                 'view2_embs': self.model(view2),
             }
+        # elif self.loss_name == 'AdversarialSimCLRSupConLoss':
         else:
             raise ValueError(f'Unimplemented loss_name {self.loss_name}.')
         

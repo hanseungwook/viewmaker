@@ -90,6 +90,40 @@ def load_image_transforms(dataset):
 
     return train_transforms, test_transforms
 
+def load_a1_transforms(dataset):
+    if 'cifar' in dataset:
+        train_transforms = transforms.Compose([
+            transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor()
+        ])
+        test_transforms = transforms.ToTensor()
+    elif 'tinyin' in dataset:
+        train_transforms = transforms.Compose([
+            transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
+            transforms.ToTensor(),
+            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+    elif dataset in ['mscoco'] or 'meta_' in dataset:
+        train_transforms = transforms.Compose([
+            transforms.Resize(32),
+            transforms.CenterCrop(32),
+            transforms.ToTensor(),
+        ])
+        test_transforms = transforms.Compose([
+            transforms.Resize(32),
+            transforms.CenterCrop(32),
+            transforms.ToTensor(),
+        ])
+    else:
+        return None, None
+
+    return train_transforms, test_transforms
+
 
 def load_default_transforms(dataset):
     if 'cifar10' == dataset:
@@ -222,4 +256,5 @@ TRANSFORMS = {
     'all': load_default_transforms,
     'all_unnorm': load_default_unnorm_transforms,
     'none': load_image_transforms, 
+    'a1': load_a1_transforms
 }
