@@ -49,6 +49,7 @@ def run(args, gpu_device=None):
         lr_callback = globals()[config.optim_params.scheduler](
             initial_lr=config.optim_params.learning_rate,
             max_epochs=config.num_epochs,
+            use_cosine_scheduler=config.optim_params.cosine or False,
             schedule=(
                 int(0.6*config.num_epochs),
                 int(0.8*config.num_epochs),
