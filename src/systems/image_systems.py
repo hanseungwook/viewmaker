@@ -16,7 +16,7 @@ from src.datasets import datasets
 from src.models import resnet_small, resnet
 from src.models.transfer import LogisticRegression
 from src.objectives.memory_bank import MemoryBank
-from src.objectives.adversarial import  AdversarialSimCLRLoss,  AdversarialNCELoss
+from src.objectives.adversarial import  AdversarialSimCLRLoss, AdversarialSimCLRSupConLoss, AdversarialNCELoss
 from src.objectives.infonce import NoiseConstrastiveEstimation
 from src.objectives.simclr import SimCLRObjective
 from src.utils import utils
@@ -149,7 +149,7 @@ class PretrainViewMakerSystem(pl.LightningModule):
                 'indices': indices,
                 'view1_embs': view1_embs,
             }
-        elif self.loss_name == 'AdversarialSimCLRLoss':
+        elif self.loss_name == 'AdversarialSimCLRLoss' or self.loss_name == 'AdversarialSimCLRSupConLoss':
             if self.config.model_params.double_viewmaker:
                 view1, view2 = self.view(img)
             else:
@@ -160,7 +160,6 @@ class PretrainViewMakerSystem(pl.LightningModule):
                 'view1_embs': self.model(view1),
                 'view2_embs': self.model(view2),
             }
-        # elif self.loss_name == 'AdversarialSimCLRSupConLoss':
         else:
             raise ValueError(f'Unimplemented loss_name {self.loss_name}.')
         
@@ -175,6 +174,16 @@ class PretrainViewMakerSystem(pl.LightningModule):
         if self.loss_name == 'AdversarialSimCLRLoss':
             view_maker_loss_weight = self.config.loss_params.view_maker_loss_weight
             loss_function = AdversarialSimCLRLoss(
+                embs1=emb_dict['view1_embs'],
+                embs2=emb_dict['view2_embs'],
+                t=self.t,
+                view_maker_loss_weight=view_maker_loss_weight
+            )
+            encoder_loss, view_maker_loss = loss_function.get_loss()
+            img_embs = emb_dict['view1_embs'] 
+        elif self.loss_name == 'AdversarialSimCLRSupConLoss':
+            view_maker_loss_weight = self.config.loss_params.view_maker_loss_weight
+            loss_function = AdversarialSimCLRSupConLoss(
                 embs1=emb_dict['view1_embs'],
                 embs2=emb_dict['view2_embs'],
                 t=self.t,
