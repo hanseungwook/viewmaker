@@ -1,6 +1,6 @@
 {
     "exp_base": null,
-    "exp_name": "pretrain_viewmaker_cifar10_simclr_resnet18",
+    "exp_name": "pretrain_viewmaker_cifar10_a1_simclr_resnet18",
     "system": "PretrainViewMakerSystem",
     "cuda": true,
     "gpu_device": 0,
@@ -11,6 +11,7 @@
     "data_loader_workers": 8,
     "data_params": {
         "dataset": "cifar10",
+        "default_augmentations": "a1"
     },
     "model_params": {
         "out_dim": 128,
