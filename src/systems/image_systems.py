@@ -16,7 +16,7 @@ from src.datasets import datasets
 from src.models import resnet_small, resnet
 from src.models.transfer import LogisticRegression
 from src.objectives.memory_bank import MemoryBank
-from src.objectives.adversarial import  AdversarialSimCLRLoss, AdversarialSimCLRSupConLoss, AdversarialNCELoss
+from src.objectives.adversarial import  AdversarialSimCLRLoss, AdversarialSimCLRSupConLoss, AdversarialNCELoss, AdversarialSimCLR3ViewLoss
 from src.objectives.infonce import NoiseConstrastiveEstimation
 from src.objectives.simclr import SimCLRObjective
 from src.utils import utils
@@ -142,6 +142,7 @@ class PretrainViewMakerSystem(pl.LightningModule):
 
     def forward(self, batch, train=True):
         indices, img, img2, neg_img, _, = batch
+        
         if self.loss_name == 'AdversarialNCELoss':
             view1 = self.view(img)
             view1_embs = self.model(view1)
@@ -152,6 +153,9 @@ class PretrainViewMakerSystem(pl.LightningModule):
         elif self.loss_name == 'AdversarialSimCLRLoss' or self.loss_name == 'AdversarialSimCLRSupConLoss':
             if self.config.model_params.double_viewmaker:
                 view1, view2 = self.view(img)
+            elif self.config.model_params.single_viewmaker:
+                view1 = img
+                view2 = self.view(img2)
             else:
                 view1 = self.view(img)
                 view2 = self.view(img2)
@@ -159,6 +163,23 @@ class PretrainViewMakerSystem(pl.LightningModule):
                 'indices': indices,
                 'view1_embs': self.model(view1),
                 'view2_embs': self.model(view2),
+            }
+        elif self.loss_name == 'AdversarialSimCLR3ViewLoss':
+            img3 = neg_img
+            if self.config.model_params.double_viewmaker:
+                view1, view2 = self.view(img)
+            elif self.config.model_params.single_viewmaker:
+                view1 = img
+                view2 = img2
+                view3 = self.view(img3)
+            else:
+                view1 = self.view(img)
+                view2 = self.view(img2)
+            emb_dict = {
+                'indices': indices,
+                'view1_embs': self.model(view1),
+                'view2_embs': self.model(view2),
+                'view3_embs': self.model(view3),
             }
         else:
             raise ValueError(f'Unimplemented loss_name {self.loss_name}.')
@@ -178,6 +199,19 @@ class PretrainViewMakerSystem(pl.LightningModule):
                 embs2=emb_dict['view2_embs'],
                 t=self.t,
                 view_maker_loss_weight=view_maker_loss_weight
+            )
+            encoder_loss, view_maker_loss = loss_function.get_loss()
+            img_embs = emb_dict['view1_embs'] 
+        elif self.loss_name == 'AdversarialSimCLR3ViewLoss':
+            view_maker_loss_weight = self.config.loss_params.view_maker_loss_weight
+            alpha = self.config.loss_params.alpha
+            loss_function = AdversarialSimCLR3ViewLoss(
+                embs1=emb_dict['view1_embs'],
+                embs2=emb_dict['view2_embs'],
+                embs3=emb_dict['view3_embs'],
+                t=self.t,
+                view_maker_loss_weight=view_maker_loss_weight,
+                alpha=alpha
             )
             encoder_loss, view_maker_loss = loss_function.get_loss()
             img_embs = emb_dict['view1_embs'] 

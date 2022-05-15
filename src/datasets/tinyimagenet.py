@@ -30,7 +30,7 @@ class TinyImageNet(data.Dataset):
         if train:
             root = os.path.join(root, 'train')
         else:
-            root = os.path.join(root, 'test')
+            root = os.path.join(root, 'val')
 
         self.dataset = datasets.ImageFolder(
             root,
@@ -46,6 +46,49 @@ class TinyImageNet(data.Dataset):
         # build this wrapper such that we can return index
         data = [index, img_data.float(), img2_data.float(), 
                 neg_data.float(), label]
+        return tuple(data)
+
+    def __len__(self):
+        return len(self.dataset)
+
+class TinyImageNetA2(data.Dataset):
+    NUM_CLASSES = 200
+    NUM_CHANNELS = 3
+    FILTER_SIZE = 32
+    MULTI_LABEL = False
+
+    def __init__(
+            self, 
+            root=DATA_ROOTS['tinyin'],
+            train=True, 
+            image_transforms=None, 
+        ):
+        super().__init__()
+        if not os.path.isdir(root):
+            os.makedirs(root)
+        self.image_transforms = image_transforms
+        if train:
+            root = os.path.join(root, 'train')
+        else:
+            root = os.path.join(root, 'val')
+
+        self.dataset = datasets.ImageFolder(
+            root,
+        )
+
+    def __getitem__(self, index):
+        # pick random number
+        img_data, label = self.dataset.__getitem__(index)
+        img2_data, _ = self.dataset.__getitem__(index)
+        img3_data, _ = self.dataset.__getitem__(index)
+        
+        img_data = self.image_transforms[0](img_data)
+        img2_data = self.image_transforms[0](img2_data)
+        img3_data = self.image_transforms[1](img3_data)
+        # build this wrapper such that we can return index
+        data = [index, img_data.float(), img2_data.float(), 
+                img3_data.float(), label]
+
         return tuple(data)
 
     def __len__(self):

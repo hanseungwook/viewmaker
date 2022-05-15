@@ -1,6 +1,6 @@
 {
     "exp_base": null,
-    "exp_name": "pretrain_viewmaker_cifar10_a1_simclr_resnet18",
+    "exp_name": "pretrain_viewmaker_cifar10_a1new_simclr_resnet18",
     "system": "PretrainViewMakerSystem",
     "cuda": true,
     "gpu_device": 0,
@@ -22,7 +22,8 @@
         "noise_dim": 100,
         "view_bound_magnitude": 0.05,
         "num_res_blocks": 3,
-        "input_size": 32
+        "input_size": 32,
+        "single_viewmaker": true
     },
     "loss_params": {
         "objective": "AdversarialSimCLRLoss",

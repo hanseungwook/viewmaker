@@ -1,6 +1,6 @@
 {
     "exp_base": null,
-    "exp_name": "pretrain_viewmaker_cifar100_a1_simclr_resnet18",
+    "exp_name": "pretrain_viewmaker_cifar100_a1new_simclr_resnet50",
     "system": "PretrainViewMakerSystem",
     "cuda": true,
     "gpu_device": 0,
@@ -22,16 +22,17 @@
         "noise_dim": 100,
         "view_bound_magnitude": 0.05,
         "num_res_blocks": 3,
-        "input_size": 32
+        "input_size": 32,
+        "single_viewmaker": true
     },
     "loss_params": {
-        "objective": "AdversarialSimCLRSupConLoss",
+        "objective": "AdversarialSimCLRLoss",
         "view_maker_loss_weight": 1,
         "t": 0.1
     },
     "optim_params": {
-        "batch_size": 1024,
-        "learning_rate": 0.5,
+        "batch_size": 256,
+        "learning_rate": 0.03,
         "momentum": 0.9,
         "weight_decay": 1e-4,
         "validate_freq": 1,

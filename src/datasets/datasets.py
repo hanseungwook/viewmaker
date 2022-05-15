@@ -3,9 +3,9 @@ import random
 from torchvision import transforms
 from PIL import ImageFilter, Image
 
-from src.datasets.cifar10 import CIFAR10, CIFAR10Corners
-from src.datasets.cifar100 import CIFAR100, CIFAR100Corners
-from src.datasets.tinyimagenet import TinyImageNet, TinyImageNetCorners
+from src.datasets.cifar10 import CIFAR10, CIFAR10A2, CIFAR10Corners
+from src.datasets.cifar100 import CIFAR100, CIFAR100A2, CIFAR100Corners
+from src.datasets.tinyimagenet import TinyImageNet, TinyImageNetA2, TinyImageNetCorners
 
 from src.datasets.meta_datasets.aircraft import Aircraft
 from src.datasets.meta_datasets.cu_birds import CUBirds
@@ -20,10 +20,13 @@ from src.datasets.data_statistics import get_data_mean_and_stdev
 
 DATASET = {
     'cifar10': CIFAR10,
+    'cifar10-a2': CIFAR10A2,
     'cifar100': CIFAR100,
+    'cifar100-a2': CIFAR100A2,
     'cifar100_corners': CIFAR100Corners,
     'cifar10_corners': CIFAR10Corners,
     'tinyin': TinyImageNet,
+    'tinyin-a2': TinyImageNetA2,
     'tinyin_corners': TinyImageNetCorners,
     'meta_aircraft': Aircraft,
     'meta_cu_birds': CUBirds,
@@ -92,18 +95,43 @@ def load_image_transforms(dataset):
 
 def load_a1_transforms(dataset):
     if 'cifar' in dataset:
-        train_transforms = transforms.Compose([
-            transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor()
-        ])
+        train_transforms = [
+            transforms.Compose([
+                transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+                transforms.RandomApply([
+                    transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+                ], p=0.8),
+                transforms.RandomGrayscale(p=0.2),
+                transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor()
+            ]),
+            transforms.Compose([
+                transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor()
+            ])
+        ]
         test_transforms = transforms.ToTensor()
     elif 'tinyin' in dataset:
-        train_transforms = transforms.Compose([
-            transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
-            transforms.ToTensor(),
+        train_transforms = [
+            transforms.Compose([
+                transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
+                transforms.RandomApply([
+                    transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+                ], p=0.8),
+                transforms.RandomGrayscale(p=0.2),
+                transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+            ]),
+            transforms.Compose([
+                transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
             # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
-        ])
+            ])
+        ]
         test_transforms = transforms.Compose([
             transforms.ToTensor(),
             # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
@@ -126,21 +154,40 @@ def load_a1_transforms(dataset):
 
 def load_a2_transforms(dataset):
     if 'cifar' in dataset:
-        train_transforms = transforms.Compose([
-            transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor()
-        ])
+        train_transforms = [
+            transforms.Compose([
+                transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
+                transforms.RandomApply([
+                    transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+                ], p=0.8),
+                transforms.RandomGrayscale(p=0.2),
+                transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor()
+            ]),
+            transforms.Compose([
+                transforms.ToTensor()
+            ])
+        ]
         test_transforms = transforms.ToTensor()
     elif 'tinyin' in dataset:
-        train_transforms = transforms.Compose([
-            transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
-            transforms.ToTensor(),
-            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
-        ])
+        train_transforms = [
+            transforms.Compose([
+                transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
+                transforms.RandomApply([
+                    transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+                ], p=0.8),
+                transforms.RandomGrayscale(p=0.2),
+                transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor()
+            ]),
+            transforms.Compose([
+                transforms.ToTensor()
+            ])
+        ]
         test_transforms = transforms.Compose([
             transforms.ToTensor(),
-            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
         ])
     elif dataset in ['mscoco'] or 'meta_' in dataset:
         train_transforms = transforms.Compose([

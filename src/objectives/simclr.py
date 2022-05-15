@@ -78,23 +78,34 @@ class SimCLRSupConObjective(torch.nn.Module):
 
         return loss
 
-# class SimCLRObjective3View(torch.nn.Module):
+class SimCLRObjective3View(torch.nn.Module):
 
-#     def __init__(self, outputs1, outputs2, t, push_only=False):
-#         super().__init__()
-#         self.outputs1 = l2_normalize(outputs1, dim=1)
-#         self.outputs2 = l2_normalize(outputs2, dim=1)
-#         self.t = t
-#         self.push_only = push_only
+    def __init__(self, outputs1, outputs2, outputs3, t, base_t=0.07, alpha=0.07, push_only=False):
+        super().__init__()
+        self.outputs1 = l2_normalize(outputs1, dim=1)
+        self.outputs2 = l2_normalize(outputs2, dim=1)
+        self.outputs3 = l2_normalize(outputs3, dim=1)
+        self.t = t
+        self.base_t = base_t
+        self.alpha = t
+        self.push_only = push_only
 
-#     def get_loss(self):
-#         batch_size = self.outputs1.size(0)  # batch_size x out_dim
-#         witness_score = torch.sum(self.outputs1 * self.outputs2, dim=1)
-#         if self.push_only:
-#             # Don't pull views together.
-#             witness_score = 0
-#         outputs12 = torch.cat([self.outputs1, self.outputs2], dim=0)
-#         witness_norm = self.outputs1 @ outputs12.T
-#         witness_norm = torch.logsumexp(witness_norm / self.t, dim=1) - math.log(2 * batch_size)
-#         loss = -torch.mean(witness_score / self.t - witness_norm)
-#         return loss
+    def get_loss(self):    
+        """
+        essl simclr loss, append inner product
+        """
+        loss = self.info_nce_loss(self.outputs1, self.outputs2) / 2 + self.info_nce_loss(self.outputs2, self.outputs1) / 2
+        inner_prod = torch.mean(torch.sum(self.outputs1 * self.outputs2, dim=1)) / 2 + torch.mean(torch.sum(self.outputs2 * self.outputs3, dim=1)) / 2
+        loss = loss - self.alpha * inner_prod / self.t
+        
+        loss = loss * (self.t / self.base_t)
+
+        return loss 
+
+    def info_nce_loss(self, z1, z2):
+        logits = z1 @ z2.T
+        logits /= self.t
+        n = z2.shape[0]
+        labels = torch.arange(0, n, dtype=torch.long).cuda()
+        loss = torch.nn.functional.cross_entropy(logits, labels)
+        return loss
