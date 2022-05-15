@@ -33,7 +33,7 @@
     },
     "optim_params": {
         "batch_size": 512,
-        "learning_rate": 0.03,
+        "learning_rate": 0.06,
         "momentum": 0.9,
         "weight_decay": 1e-4,
         "validate_freq": 1,
