@@ -1,9 +1,9 @@
 #!/bin/bash -l
 
 # SLURM SUBMIT SCRIPT
-#SBATCH -J vma1_cifar100
-#SBATCH -o vma1_cifar100_%j.out
-#SBATCH -e vma1_cifar100_%j.err
+#SBATCH -J vma1_tinyin
+#SBATCH -o vma1_tinyin_%j.out
+#SBATCH -e vma1_tinyin_%j.err
 #SBATCH --gres=gpu:4
 #SBATCH --cpus-per-gpu=24
 #SBATCH --mem=0
@@ -30,7 +30,7 @@ export WANDB_MODE=offline
 
 srun python3 \
       scripts/run_image.py \
-      config/image/pretrain_viewmaker_cifar100_a1_simclr_cosine.json \
+      config/image/pretrain_viewmaker_tinyin_a1_simclr.json \
 
 echo "Run completed at:- "
 date

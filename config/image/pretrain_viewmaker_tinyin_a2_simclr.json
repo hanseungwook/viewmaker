@@ -11,7 +11,7 @@
     "data_loader_workers": 8,
     "data_params": {
         "dataset": "tinyin-a2",
-        "default_augmentations": "a1"
+        "default_augmentations": "a2"
     },
     "model_params": {
         "out_dim": 128,
@@ -32,7 +32,7 @@
         "alpha": 0.5
     },
     "optim_params": {
-        "batch_size": 256,
+        "batch_size": 512,
         "learning_rate": 0.03,
         "momentum": 0.9,
         "weight_decay": 1e-4,
