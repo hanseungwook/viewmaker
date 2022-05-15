@@ -126,10 +126,10 @@ class PretrainViewMakerSystem(pl.LightningModule):
     
     def normalize(self, imgs):
         # These numbers were computed using compute_image_dset_stats.py
-        if 'cifar10' == self.config.data_params.dataset:
+        if self.config.data_params.dataset == 'cifar10' or self.config.data_params.dataset == 'cifar10-a2':
             mean = torch.tensor([0.491, 0.482, 0.446], device=imgs.device)
             std = torch.tensor([0.247, 0.243, 0.261], device=imgs.device)
-        elif 'cifar100' == self.config.data_params.dataset:
+        elif self.config.data_params.dataset == 'cifar100' or self.config.data_params.dataset == 'cifar100-a2':
             mean = torch.tensor([0.5071, 0.4867, 0.4408], device=imgs.device)
             std = torch.tensor([0.2675, 0.2565, 0.2761], device=imgs.device)
         elif 'tinyin' in self.config.data_params.dataset:
