@@ -69,6 +69,9 @@ class CIFAR100(data.Dataset):
                     neg_data.float(), label]
             return tuple(data)
 
+    def __len__(self):
+        return len(self.dataset)
+
 class CIFAR100A2(data.Dataset):
     NUM_CLASSES = 100
     NUM_CHANNELS = 3
@@ -106,6 +109,9 @@ class CIFAR100A2(data.Dataset):
                 img3_data.float(), label]
 
         return tuple(data)
+
+    def __len__(self):
+        return len(self.dataset)
 
 class CIFAR100Corners(data.Dataset):
     '''Creates a four-corners mosaic of different CIFAR images.'''

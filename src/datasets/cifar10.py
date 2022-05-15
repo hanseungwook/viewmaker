@@ -109,6 +109,9 @@ class CIFAR10A2(data.Dataset):
                 img3_data.float(), label]
 
         return tuple(data)
+        
+    def __len__(self):
+        return len(self.dataset)
 
 
 class CIFAR10Corners(data.Dataset):
