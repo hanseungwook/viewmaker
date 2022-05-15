@@ -26,27 +26,50 @@ class TinyImageNet(data.Dataset):
         super().__init__()
         if not os.path.isdir(root):
             os.makedirs(root)
-        
+        self.image_transforms = image_transforms
+
         if train:
             root = os.path.join(root, 'train')
         else:
             root = os.path.join(root, 'val')
 
-        self.dataset = datasets.ImageFolder(
-            root,
-            transform=image_transforms,
-        )
+
+        if isinstance(image_transforms, list):
+            self.dataset = datasets.ImageFolder(
+                root
+            )
+        else:
+            self.dataset = datasets.ImageFolder(
+                root,
+                transform=image_transforms
+            )
+
 
     def __getitem__(self, index):
-        # pick random number
-        neg_index = np.random.choice(np.arange(self.__len__()))
-        img_data, label = self.dataset.__getitem__(index)
-        img2_data, _ = self.dataset.__getitem__(index)
-        neg_data, _ = self.dataset.__getitem__(neg_index)
-        # build this wrapper such that we can return index
-        data = [index, img_data.float(), img2_data.float(), 
-                neg_data.float(), label]
-        return tuple(data)
+        if isinstance(self.image_transforms, list):
+            # pick random number
+            neg_index = np.random.choice(np.arange(self.__len__()))
+            img_data, label = self.dataset.__getitem__(index)
+            img2_data, _ = self.dataset.__getitem__(index)
+            neg_data, _ = self.dataset.__getitem__(neg_index)
+
+            img_data = self.image_transforms[0](img_data)
+            img2_data = self.image_transforms[1](img2_data)
+            neg_data = self.image_transforms[0](neg_data)
+            # build this wrapper such that we can return index
+            data = [index, img_data.float(), img2_data.float(), 
+                    neg_data.float(), label]
+            return tuple(data)
+        else: 
+            # pick random number
+            neg_index = np.random.choice(np.arange(self.__len__()))
+            img_data, label = self.dataset.__getitem__(index)
+            img2_data, _ = self.dataset.__getitem__(index)
+            neg_data, _ = self.dataset.__getitem__(neg_index)
+            # build this wrapper such that we can return index
+            data = [index, img_data.float(), img2_data.float(), 
+                    neg_data.float(), label]
+            return tuple(data)
 
     def __len__(self):
         return len(self.dataset)
@@ -77,19 +100,34 @@ class TinyImageNetA2(data.Dataset):
         )
 
     def __getitem__(self, index):
-        # pick random number
-        img_data, label = self.dataset.__getitem__(index)
-        img2_data, _ = self.dataset.__getitem__(index)
-        img3_data, _ = self.dataset.__getitem__(index)
-        
-        img_data = self.image_transforms[0](img_data)
-        img2_data = self.image_transforms[0](img2_data)
-        img3_data = self.image_transforms[1](img3_data)
-        # build this wrapper such that we can return index
-        data = [index, img_data.float(), img2_data.float(), 
-                img3_data.float(), label]
+        if isinstance(self.image_transforms, list):
+            # pick random number
+            img_data, label = self.dataset.__getitem__(index)
+            img2_data, _ = self.dataset.__getitem__(index)
+            img3_data, _ = self.dataset.__getitem__(index)
+            
+            img_data = self.image_transforms[0](img_data)
+            img2_data = self.image_transforms[0](img2_data)
+            img3_data = self.image_transforms[1](img3_data)
+            # build this wrapper such that we can return index
+            data = [index, img_data.float(), img2_data.float(), 
+                    img3_data.float(), label]
 
-        return tuple(data)
+            return tuple(data)
+        else:
+            # pick random number
+            img_data, label = self.dataset.__getitem__(index)
+            img2_data, _ = self.dataset.__getitem__(index)
+            img3_data, _ = self.dataset.__getitem__(index)
+            
+            img_data = self.image_transforms(img_data)
+            img2_data = self.image_transforms(img2_data)
+            img3_data = self.image_transforms(img3_data)
+            # build this wrapper such that we can return index
+            data = [index, img_data.float(), img2_data.float(), 
+                    img3_data.float(), label]
+
+            return tuple(data)
 
     def __len__(self):
         return len(self.dataset)

@@ -95,21 +95,33 @@ class CIFAR10A2(data.Dataset):
             download=True)
 
     def __getitem__(self, index):
-        
-        # pick random number
-        img_data, label = self.dataset.__getitem__(index)
-        img2_data, _ = self.dataset.__getitem__(index)
-        img3_data, _ = self.dataset.__getitem__(index)
-        
-        img_data = self.image_transforms[0](img_data)
-        img2_data = self.image_transforms[0](img2_data)
-        img3_data = self.image_transforms[1](img3_data)
-        # build this wrapper such that we can return index
-        data = [index, img_data.float(), img2_data.float(), 
-                img3_data.float(), label]
+        if isinstance(self.image_transforms, list):
+            # pick random number
+            img_data, label = self.dataset.__getitem__(index)
+            img2_data, _ = self.dataset.__getitem__(index)
+            img3_data, _ = self.dataset.__getitem__(index)
+            
+            img_data = self.image_transforms[0](img_data)
+            img2_data = self.image_transforms[0](img2_data)
+            img3_data = self.image_transforms[1](img3_data)
+            # build this wrapper such that we can return index
+            data = [index, img_data.float(), img2_data.float(), 
+                    img3_data.float(), label]
 
-        return tuple(data)
-        
+            return tuple(data)
+        else:
+            img_data, label = self.dataset.__getitem__(index)
+            img2_data, _ = self.dataset.__getitem__(index)
+            img3_data, _ = self.dataset.__getitem__(index)
+            
+            img_data = self.image_transforms(img_data)
+            img2_data = self.image_transforms(img2_data)
+            img3_data = self.image_transforms(img3_data)
+            # build this wrapper such that we can return index
+            data = [index, img_data.float(), img2_data.float(), 
+                    img3_data.float(), label]
+
+            return tuple(data)
     def __len__(self):
         return len(self.dataset)
 
