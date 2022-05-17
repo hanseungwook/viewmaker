@@ -13,8 +13,9 @@
         "dataset": "tinyin"
     },
     "model_params": {
-	"use_prepool": true,
-	"resnet_small": false
+        "use_prepool": true,
+        "resnet_small": false,
+        "input_size": 64
     },
     "pretrain_model": {
         "exp_dir": "./experiments/experiments/pretrain_viewmaker_tinyin_a1new_simclr_resnet18/",
