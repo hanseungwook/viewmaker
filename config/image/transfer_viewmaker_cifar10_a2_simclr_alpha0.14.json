@@ -18,7 +18,7 @@
     },
     "pretrain_model": {
         "exp_dir": "./experiments/experiments/pretrain_viewmaker_cifar10_a2_simclr_resnet18_alpha0.14/",
-        "checkpoint_name": "epoch=199.ckpt"
+        "checkpoint_name": "epoch=799.ckpt"
     },
     "optim_params": {
         "batch_size": 128,
