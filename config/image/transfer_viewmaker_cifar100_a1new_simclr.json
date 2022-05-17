@@ -13,8 +13,8 @@
         "dataset": "cifar100"
     },
     "model_params": {
-	"use_prepool": true,
-	"resnet_small": false
+        "use_prepool": false,
+        "resnet_small": false
     },
     "pretrain_model": {
         "exp_dir": "./experiments/experiments/pretrain_viewmaker_cifar100_a1new_simclr_resnet50_noproj/",
