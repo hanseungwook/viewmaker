@@ -18,7 +18,7 @@
     },
     "pretrain_model": {
         "exp_dir": "./experiments/experiments/pretrain_viewmaker_cifar100_a2_simclr_resnet50_noproj/",
-        "checkpoint_name": "epoch=999.ckpt"
+        "checkpoint_name": "epoch=1199.ckpt"
     },
     "optim_params": {
         "batch_size": 128,
