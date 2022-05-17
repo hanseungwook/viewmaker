@@ -1,6 +1,6 @@
 {
     "exp_base": null,
-    "exp_name": "transfer_viewmaker_cifar100_a2_simclr_resnet50_noproj",
+    "exp_name": "transfer_viewmaker_cifar100_a2_simclr_resnet50_noproj_epoch1200",
     "system": "TransferViewMakerSystem",
     "cuda": true,
     "gpu_device": 0,
