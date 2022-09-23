@@ -6,6 +6,7 @@ from PIL import ImageFilter, Image
 from src.datasets.cifar10 import CIFAR10, CIFAR10A2, CIFAR10Corners
 from src.datasets.cifar100 import CIFAR100, CIFAR100A2, CIFAR100Corners
 from src.datasets.tinyimagenet import TinyImageNet, TinyImageNetA2, TinyImageNetCorners
+from src.datasets.plankton import Plankton
 
 from src.datasets.meta_datasets.aircraft import Aircraft
 from src.datasets.meta_datasets.cu_birds import CUBirds
@@ -28,6 +29,7 @@ DATASET = {
     'tinyin': TinyImageNet,
     'tinyin-a2': TinyImageNetA2,
     'tinyin_corners': TinyImageNetCorners,
+    'plankton': Plankton,
     'meta_aircraft': Aircraft,
     'meta_cu_birds': CUBirds,
     'meta_dtd': DTD,
@@ -72,6 +74,14 @@ def load_image_transforms(dataset):
         train_transforms = transforms.Compose([
             transforms.ToTensor(),
             # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            # transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+    elif 'plankton' in dataset:
+        train_transforms = transforms.Compose([
+            transforms.ToTensor(),
         ])
         test_transforms = transforms.Compose([
             transforms.ToTensor(),
@@ -258,6 +268,26 @@ def load_default_transforms(dataset):
         test_transforms = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.480, 0.448, 0.398), (0.277, 0.269, 0.282))
+        ])
+    elif 'plankton' == dataset:
+        train_transforms = transforms.Compose([
+            transforms.RandomResizedCrop(64, scale=(0.2, 1.)),
+            transforms.RandomApply([
+                transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
+            ], p=0.8),
+            transforms.RandomGrayscale(p=0.2),
+            # transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            # TODO: fix norm values
+            transforms.Normalize(mean=[0.491, 0.482, 0.446],
+                                std=[0.247, 0.243, 0.261]),
+        ])
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            # TODO: fix norm values
+            transforms.Normalize(mean=[0.491, 0.482, 0.446],
+                                std=[0.247, 0.243, 0.261]),
         ])
     elif dataset in ['mscoco'] or 'meta_' in dataset:
         mean, std = get_data_mean_and_stdev(dataset)

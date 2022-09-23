@@ -135,6 +135,7 @@ class PretrainViewMakerSystem(pl.LightningModule):
         elif 'tinyin' in self.config.data_params.dataset:
             mean = torch.tensor([0.480, 0.448, 0.398], device=imgs.device)
             std = torch.tensor([0.277, 0.269, 0.282], device=imgs.device)
+        # TODO: update image stats
         else:
             raise ValueError(f'Dataset normalizer for {self.config.data_params.dataset} not implemented')
         imgs = (imgs - mean[None, :, None, None]) / std[None, :, None, None]
